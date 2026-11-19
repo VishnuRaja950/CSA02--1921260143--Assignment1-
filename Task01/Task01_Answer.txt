@@ -1,0 +1,10 @@
+TASK 1 – Understand the Problem and Identify the Data
+
+The program receives one meter reading for a household and calculates the electricity used and amount payable. It must process normal readings and a 16-bit meter rollover. The bill contains energy charge plus fixed charge. The first 100 units are free, units 101–200 cost Rs.2.25 each and units above 200 cost Rs.4.50 each.
+
+Constants are the meter maximum (65535), slab limits (100 and 200), rates (0, 225 and 450 paise per unit), and fixed charge (5000 paise). They do not change during one run. Readings and household details vary for every record. Units and charges are computed values.
+Correctness rules: (1) bill must never be negative; (2) total = fixed charge + energy charge; (3) energy charge must follow the stated slabs; (4) rollover from 65535 to 0 must not produce a negative result; (5) invalid readings must be rejected; (6) all money arithmetic must remain exact to one paisa.
+Assumptions: meter register is exactly 16 bits; at most one rollover occurs between two readings; a current reading lower than previous is treated as rollover only when this assumption is confirmed by the meter protocol; each unit is one kWh; tariffs are common to the household categories in this simplified assignment; tax and late fees are excluded.
+Alternative: store readings as text
+A reading such as "01530" can be stored in a character array of six bytes including the null terminator. Conversion with strtoul() takes O(d) time for d digits; comparing two fixed-width numeric strings can take O(d) time. A 16-bit integer usually occupies 2 bytes and arithmetic/comparison is O(1). Text preserves leading zeros and is useful for raw files, but requires conversion and validation. For d=5, two readings need about 12 bytes as two six-byte strings versus 4 bytes as two 16-bit values, excluding structure padding.
+Pseudocode: read household id, category, previous and current readings; validate ranges; calculate units with 16-bit modular subtraction; calculate each slab in paise; add fixed charge; print a formatted bill; repeat for each household.
